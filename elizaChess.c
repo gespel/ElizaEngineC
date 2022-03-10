@@ -180,7 +180,7 @@ void printBoard(boardState *input) {
 }
 
 void generate(boardState *root) {
-	if(counter > -1) {
+	if(counter < 100) {
 		root = moveGenerator(root);
 		counter++;
 		printf("\n\n%d\n", counter);

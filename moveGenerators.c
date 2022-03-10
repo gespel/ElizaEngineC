@@ -3,8 +3,14 @@
 void generatePawnMove(boardState *input, boardState *tmp, int x, int y, int *moveCounter) {
 	if(getColor(input->board, x, y) == WHITE) {
 		if(getColor(input->board, x, y+1) == 0 && y+1 < 8) {
-			tmp->next[*moveCounter] = doMove(input, x, y, x, y+1, 10);
-			(*moveCounter)++;
+			if(y+1 == 7) {
+				tmp->next[*moveCounter] = doMove(input, x, y, x, y+1, 18);
+				(*moveCounter)++;
+			}
+			else {
+				tmp->next[*moveCounter] = doMove(input, x, y, x, y+1, 10);
+				(*moveCounter)++;
+			}
 		}
 		if(y == 1) {
             if(getColor(input->board, x, y+1) == 0 && y+2 < 8) {
@@ -14,20 +20,38 @@ void generatePawnMove(boardState *input, boardState *tmp, int x, int y, int *mov
     			}
             }
 		}
-		if(getColor(input->board, x-1, y+1) == -1 && y+1 < 8) {
-			tmp->next[*moveCounter] = doMove(input, x, y, x-1, y+1, 10);
-			(*moveCounter)++;
+		if(getColor(input->board, x-1, y+1) == -1 && y+1 < 8 && input->board[x-1][y+1] != 29) {
+			if(y+1 == 7) {
+				tmp->next[*moveCounter] = doMove(input, x, y, x-1, y+1, 18);
+				(*moveCounter)++;
+			}
+			else {
+				tmp->next[*moveCounter] = doMove(input, x, y, x-1, y+1, 10);
+				(*moveCounter)++;
+			}
 		}
-		if(getColor(input->board, x+1, y+1) == -1 && y+1 < 8) {
-			tmp->next[*moveCounter] = doMove(input, x, y, x+1, y+1, 10);
-			(*moveCounter)++;
+		if(getColor(input->board, x+1, y+1) == -1 && y+1 < 8 && input->board[x+1][y+1] != 29) {
+			if(y+1 == 7) {
+				tmp->next[*moveCounter] = doMove(input, x, y, x+1, y+1, 18);
+				(*moveCounter)++;
+			}
+			else {
+				tmp->next[*moveCounter] = doMove(input, x, y, x+1, y+1, 10);
+				(*moveCounter)++;
+			}
 		}
 
 	}
 	if(getColor(input->board, x, y) == BLACK) {
 		if(getColor(input->board, x, y-1) == 0 && y-1 >= 0) {
-			tmp->next[*moveCounter] = doMove(input, x, y, x, y-1, 20);
-			(*moveCounter)++;
+			if(y-1 == 0) {
+				tmp->next[*moveCounter] = doMove(input, x, y, x, y-1, 28);
+				(*moveCounter)++;
+			}
+			else {
+				tmp->next[*moveCounter] = doMove(input, x, y, x, y-1, 20);
+				(*moveCounter)++;
+			}
 		}
 		if(y == 6) {
             if(getColor(input->board, x, y-1) == 0 && y-1 >= 0) {
@@ -37,13 +61,24 @@ void generatePawnMove(boardState *input, boardState *tmp, int x, int y, int *mov
     			}
             }
 		}
-		if(getColor(input->board, x-1, y-1) == 1 && y-1 >= 0) {
-			tmp->next[*moveCounter] = doMove(input, x, y, x-1, y-1, 20);
-			(*moveCounter)++;
+		if(getColor(input->board, x-1, y-1) == 1 && y-1 >= 0 && input->board[x-1][y-1] != 19) {
+			if(y-1 == 0) {
+				tmp->next[*moveCounter] = doMove(input, x, y, x-1, y-1, 28);
+				(*moveCounter)++;
+			}
+			else {
+				tmp->next[*moveCounter] = doMove(input, x, y, x-1, y-1, 20);
+				(*moveCounter)++;
+			}
 		}
-		if(getColor(input->board, x+1, y-1) == 1 && y-1 >= 0) {
-			tmp->next[*moveCounter] = doMove(input, x, y, x+1, y-1, 20);
-			(*moveCounter)++;
+		if(getColor(input->board, x+1, y-1) == 1 && y-1 >= 0 && input->board[x+1][y-1] != 19) {
+			if(y-1 == 0) {
+				tmp->next[*moveCounter] = doMove(input, x, y, x+1, y-1, 28);
+			}
+			else {
+				tmp->next[*moveCounter] = doMove(input, x, y, x+1, y-1, 20);
+				(*moveCounter)++;
+			}
 		}
 	}
 }
@@ -60,7 +95,7 @@ void generateBishophMove(boardState *input, boardState *tmp, int x, int y, int *
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y-i, 13);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x-i , y-i) == BLACK) {
+			if(getColor(input->board, x-i , y-i) == BLACK && input->board[x-i][y-i] != 29) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y-i, 13);
 				(*moveCounter)++;
 				break;
@@ -77,7 +112,7 @@ void generateBishophMove(boardState *input, boardState *tmp, int x, int y, int *
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y+i, 13);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x-i, y+i) == BLACK) {
+			if(getColor(input->board, x-i, y+i) == BLACK && input->board[x-i][y+i] != 29) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y+i, 13);
 				(*moveCounter)++;
 				break;
@@ -94,7 +129,7 @@ void generateBishophMove(boardState *input, boardState *tmp, int x, int y, int *
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y+i, 13);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x+i, y+i) == BLACK) {
+			if(getColor(input->board, x+i, y+i) == BLACK && input->board[x+i][y+i] != 29) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y+i, 13);
 				(*moveCounter)++;
 				break;
@@ -111,7 +146,7 @@ void generateBishophMove(boardState *input, boardState *tmp, int x, int y, int *
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y-i, 13);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x+i, y-i) == BLACK) {
+			if(getColor(input->board, x+i, y-i) == BLACK && input->board[x+i][y-i] != 29) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y-i, 13);
 				(*moveCounter)++;
 				break;
@@ -130,7 +165,7 @@ void generateBishophMove(boardState *input, boardState *tmp, int x, int y, int *
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y-i, 23);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x-i , y-i) == WHITE) {
+			if(getColor(input->board, x-i , y-i) == WHITE && input->board[x-i][y-i] != 19) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y-i, 23);
 				(*moveCounter)++;
 				break;
@@ -147,7 +182,7 @@ void generateBishophMove(boardState *input, boardState *tmp, int x, int y, int *
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y+i, 23);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x-i, y+i) == WHITE) {
+			if(getColor(input->board, x-i, y+i) == WHITE && input->board[x-i][y+i] != 19) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y+i, 23);
 				(*moveCounter)++;
 				break;
@@ -164,7 +199,7 @@ void generateBishophMove(boardState *input, boardState *tmp, int x, int y, int *
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y+i, 23);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x+i, y+i) == WHITE) {
+			if(getColor(input->board, x+i, y+i) == WHITE && input->board[x+i][y+i] != 19) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y+i, 23);
 				(*moveCounter)++;
 				break;
@@ -181,7 +216,7 @@ void generateBishophMove(boardState *input, boardState *tmp, int x, int y, int *
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y-i, 23);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x+i, y-i) == WHITE) {
+			if(getColor(input->board, x+i, y-i) == WHITE && input->board[x+i][y-i] != 19) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y-i, 23);
 				(*moveCounter)++;
 				break;
@@ -191,72 +226,72 @@ void generateBishophMove(boardState *input, boardState *tmp, int x, int y, int *
 }
 void generateKnightMove(boardState *input, boardState *tmp, int x, int y, int *moveCounter) {
 	if(getColor(input->board, x, y) == WHITE) {
-		if((getColor(input->board, x-1, y-2) == 0 || getColor(input->board, x-1, y-2) == BLACK) && x-1 > -1 && y-2 > -1) {
+		if((getColor(input->board, x-1, y-2) == 0 || getColor(input->board, x-1, y-2) == BLACK) && x-1 > -1 && y-2 > -1 && input->board[x-1][y-2] != 29) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x-1, y-2, 14);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x-1, y+2) == 0 || getColor(input->board, x-1, y+2) == BLACK) && x-1 > -1 && y+2 < 8) {
+		if((getColor(input->board, x-1, y+2) == 0 || getColor(input->board, x-1, y+2) == BLACK) && x-1 > -1 && y+2 < 8 && input->board[x-1][y+2] != 29) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x-1, y+2, 14);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x+1, y+2) == 0 || getColor(input->board, x+1, y+2) == BLACK) && x+1 < 8 && y+2 < 8) {
+		if((getColor(input->board, x+1, y+2) == 0 || getColor(input->board, x+1, y+2) == BLACK) && x+1 < 8 && y+2 < 8 && input->board[x+1][y+2] != 29) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x+1, y+2, 14);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x+1, y-2) == 0 || getColor(input->board, x+1, y-2) == BLACK) && x+1 < 8 && y-2 > -1) {
+		if((getColor(input->board, x+1, y-2) == 0 || getColor(input->board, x+1, y-2) == BLACK) && x+1 < 8 && y-2 > -1 && input->board[x+1][y-2] != 29) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x+1, y-2, 14);
 			(*moveCounter)++;
 		}
 
-		if((getColor(input->board, x-2, y-1) == 0 || getColor(input->board, x-2, y-1) == BLACK) && x-2 > -1 && y-1 > -1) {
+		if((getColor(input->board, x-2, y-1) == 0 || getColor(input->board, x-2, y-1) == BLACK) && x-2 > -1 && y-1 > -1 && input->board[x-2][y-1] != 29) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x-2, y-1, 14);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x-2, y+1) == 0 || getColor(input->board, x-2, y+1) == BLACK) && x-2 > -1 && y+1 < 8) {
+		if((getColor(input->board, x-2, y+1) == 0 || getColor(input->board, x-2, y+1) == BLACK) && x-2 > -1 && y+1 < 8 && input->board[x-2][y+1] != 29) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x-2, y+1, 14);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x+2, y-1) == 0 || getColor(input->board, x+2, y-1) == BLACK) && x+2 < 8 && y-1 > -1) {
+		if((getColor(input->board, x+2, y-1) == 0 || getColor(input->board, x+2, y-1) == BLACK) && x+2 < 8 && y-1 > -1 && input->board[x+2][y-1] != 29) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x+2, y-1, 14);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x+2, y+1) == 0 || getColor(input->board, x+2, y+1) == BLACK) && x+2 < 8 && y+1 < 8) {
+		if((getColor(input->board, x+2, y+1) == 0 || getColor(input->board, x+2, y+1) == BLACK) && x+2 < 8 && y+1 < 8 && input->board[x+2][y+1] != 29) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x+2, y+1, 14);
 			(*moveCounter)++;
 		}
 	}
 
 	if(getColor(input->board, x, y) == BLACK) {
-		if((getColor(input->board, x-1, y-2) == 0 || getColor(input->board, x-1, y-2) == WHITE) && x-1 > -1 && y-2 > -1) {
+		if((getColor(input->board, x-1, y-2) == 0 || getColor(input->board, x-1, y-2) == WHITE) && x-1 > -1 && y-2 > -1 && input->board[x-1][y-2] != 19) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x-1, y-2, 24);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x-1, y+2) == 0 || getColor(input->board, x-1, y+2) == WHITE) && x-1 > -1 && y+2 < 8) {
+		if((getColor(input->board, x-1, y+2) == 0 || getColor(input->board, x-1, y+2) == WHITE) && x-1 > -1 && y+2 < 8 && input->board[x-1][y+2] != 19) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x-1, y+2, 24);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x+1, y+2) == 0 || getColor(input->board, x+1, y+2) == WHITE) && x+1 < 8 && y+2 < 8) {
+		if((getColor(input->board, x+1, y+2) == 0 || getColor(input->board, x+1, y+2) == WHITE) && x+1 < 8 && y+2 < 8 && input->board[x+1][y+2] != 19) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x+1, y+2, 24);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x+1, y-2) == 0 || getColor(input->board, x+1, y-2) == WHITE) && x+1 < 8 && y-2 > -1) {
+		if((getColor(input->board, x+1, y-2) == 0 || getColor(input->board, x+1, y-2) == WHITE) && x+1 < 8 && y-2 > -1 && input->board[x+1][y-2] != 19) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x+1, y-2, 24);
 			(*moveCounter)++;
 		}
 
-		if((getColor(input->board, x-2, y-1) == 0 || getColor(input->board, x-2, y-1) == WHITE) && x-2 > -1 && y-1 > -1) {
+		if((getColor(input->board, x-2, y-1) == 0 || getColor(input->board, x-2, y-1) == WHITE) && x-2 > -1 && y-1 > -1 && input->board[x-2][y-1] != 19) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x-2, y-1, 24);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x-2, y+1) == 0 || getColor(input->board, x-2, y+1) == WHITE) && x-2 > -1 && y+1 < 8) {
+		if((getColor(input->board, x-2, y+1) == 0 || getColor(input->board, x-2, y+1) == WHITE) && x-2 > -1 && y+1 < 8 && input->board[x-2][y+1] != 19) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x-2, y+1, 24);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x+2, y-1) == 0 || getColor(input->board, x+2, y-1) == WHITE) && x+2 < 8 && y-1 > -1) {
+		if((getColor(input->board, x+2, y-1) == 0 || getColor(input->board, x+2, y-1) == WHITE) && x+2 < 8 && y-1 > -1 && input->board[x+2][y-1] != 19) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x+2, y-1, 24);
 			(*moveCounter)++;
 		}
-		if((getColor(input->board, x+2, y+1) == 0 || getColor(input->board, x+2, y+1) == WHITE) && x+2 < 8 && y+1 < 8) {
+		if((getColor(input->board, x+2, y+1) == 0 || getColor(input->board, x+2, y+1) == WHITE) && x+2 < 8 && y+1 < 8 && input->board[x+2][y+1] != 19) {
 			tmp->next[*moveCounter] = doMove(input, x, y, x+2, y+1, 24);
 			(*moveCounter)++;
 		}
@@ -276,7 +311,7 @@ void generateRookMove(boardState *input, boardState *tmp, int x, int y, int *mov
                 tmp->next[*moveCounter] = doMove(input, x, y, x+i, y, 15);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x+i, y) == BLACK) {
+            if(getColor(input->board, x+i, y) == BLACK && input->board[x+i][y] != 29) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x+i, y, 15);
                 (*moveCounter)++;
                 break;
@@ -293,7 +328,7 @@ void generateRookMove(boardState *input, boardState *tmp, int x, int y, int *mov
                 tmp->next[*moveCounter] = doMove(input, x, y, x-i, y, 15);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x-i, y) == BLACK) {
+            if(getColor(input->board, x-i, y) == BLACK && input->board[x-i][y] != 29) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x-i, y, 15);
                 (*moveCounter)++;
                 break;
@@ -310,7 +345,7 @@ void generateRookMove(boardState *input, boardState *tmp, int x, int y, int *mov
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y+i, 15);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x, y+i) == BLACK) {
+            if(getColor(input->board, x, y+i) == BLACK && input->board[x][y+i] != 29) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y+i, 15);
                 (*moveCounter)++;
                 break;
@@ -327,7 +362,7 @@ void generateRookMove(boardState *input, boardState *tmp, int x, int y, int *mov
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y-i, 15);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x, y-i) == BLACK) {
+            if(getColor(input->board, x, y-i) == BLACK && input->board[x][y-i] != 29) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y-i, 15);
                 (*moveCounter)++;
                 break;
@@ -347,7 +382,7 @@ void generateRookMove(boardState *input, boardState *tmp, int x, int y, int *mov
                 tmp->next[*moveCounter] = doMove(input, x, y, x+i, y, 25);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x+i, y) == WHITE) {
+            if(getColor(input->board, x+i, y) == WHITE && input->board[x+i][y] != 19) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x+i, y, 25);
                 (*moveCounter)++;
                 break;
@@ -364,7 +399,7 @@ void generateRookMove(boardState *input, boardState *tmp, int x, int y, int *mov
                 tmp->next[*moveCounter] = doMove(input, x, y, x-i, y, 25);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x-i, y) == WHITE) {
+            if(getColor(input->board, x-i, y) == WHITE && input->board[x-i][y] != 19) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x-i, y, 25);
                 (*moveCounter)++;
                 break;
@@ -381,7 +416,7 @@ void generateRookMove(boardState *input, boardState *tmp, int x, int y, int *mov
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y+i, 25);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x, y+i) == WHITE) {
+            if(getColor(input->board, x, y+i) == WHITE && input->board[x][y+i] != 19) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y+i, 25);
                 (*moveCounter)++;
                 break;
@@ -398,7 +433,7 @@ void generateRookMove(boardState *input, boardState *tmp, int x, int y, int *mov
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y-i, 25);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x, y-i) == WHITE) {
+            if(getColor(input->board, x, y-i) == WHITE && input->board[x][y-i] != 19) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y-i, 25);
                 (*moveCounter)++;
                 break;
@@ -420,7 +455,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
                 tmp->next[*moveCounter] = doMove(input, x, y, x+i, y, 18);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x+i, y) == BLACK) {
+            if(getColor(input->board, x+i, y) == BLACK && input->board[x+i][y] != 29) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x+i, y, 18);
                 (*moveCounter)++;
                 break;
@@ -437,7 +472,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
                 tmp->next[*moveCounter] = doMove(input, x, y, x-i, y, 18);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x-i, y) == BLACK) {
+            if(getColor(input->board, x-i, y) == BLACK && input->board[x-i][y] != 29) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x-i, y, 18);
                 (*moveCounter)++;
                 break;
@@ -454,7 +489,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y+i, 18);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x, y+i) == BLACK) {
+            if(getColor(input->board, x, y+i) == BLACK && input->board[x][y+i] != 29) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y+i, 18);
                 (*moveCounter)++;
                 break;
@@ -471,7 +506,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y-i, 18);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x, y-i) == BLACK) {
+            if(getColor(input->board, x, y-i) == BLACK && input->board[x][y-i] != 29) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y-i, 18);
                 (*moveCounter)++;
                 break;
@@ -488,7 +523,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y-i, 18);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x-i , y-i) == BLACK) {
+			if(getColor(input->board, x-i , y-i) == BLACK && input->board[x-i][y-i] != 29) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y-i, 18);
 				(*moveCounter)++;
 				break;
@@ -505,7 +540,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y+i, 18);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x-i, y+i) == BLACK) {
+			if(getColor(input->board, x-i, y+i) == BLACK && input->board[x-i][y+i] != 29) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y+i, 18);
 				(*moveCounter)++;
 				break;
@@ -522,7 +557,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y+i, 18);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x+i, y+i) == BLACK) {
+			if(getColor(input->board, x+i, y+i) == BLACK && input->board[x+i][y+i] != 29) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y+i, 18);
 				(*moveCounter)++;
 				break;
@@ -539,7 +574,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y-i, 18);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x+i, y-i) == BLACK) {
+			if(getColor(input->board, x+i, y-i) == BLACK && input->board[x+i][y-i] != 29) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y-i, 18);
 				(*moveCounter)++;
 				break;
@@ -559,7 +594,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
                 tmp->next[*moveCounter] = doMove(input, x, y, x+i, y, 28);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x+i, y) == WHITE) {
+            if(getColor(input->board, x+i, y) == WHITE && input->board[x+i][y] != 19) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x+i, y, 28);
                 (*moveCounter)++;
                 break;
@@ -576,7 +611,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
                 tmp->next[*moveCounter] = doMove(input, x, y, x-i, y, 28);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x-i, y) == WHITE) {
+            if(getColor(input->board, x-i, y) == WHITE && input->board[x-i][y] != 19) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x-i, y, 28);
                 (*moveCounter)++;
                 break;
@@ -593,7 +628,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y+i, 28);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x, y+i) == WHITE) {
+            if(getColor(input->board, x, y+i) == WHITE && input->board[x][y+i] != 19) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y+i, 28);
                 (*moveCounter)++;
                 break;
@@ -610,7 +645,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y-i, 28);
                 (*moveCounter)++;
             }
-            if(getColor(input->board, x, y-i) == WHITE) {
+            if(getColor(input->board, x, y-i) == WHITE && input->board[x][y-i] != 19) {
                 tmp->next[*moveCounter] = doMove(input, x, y, x, y-i, 28);
                 (*moveCounter)++;
                 break;
@@ -627,7 +662,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y-i, 28);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x-i , y-i) == WHITE) {
+			if(getColor(input->board, x-i , y-i) == WHITE  && input->board[x-i][y-i] != 19) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y-i, 28);
 				(*moveCounter)++;
 				break;
@@ -644,7 +679,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y+i, 28);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x-i, y+i) == WHITE) {
+			if(getColor(input->board, x-i, y+i) == WHITE && input->board[x-i][y+i] != 19) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x-i, y+i, 28);
 				(*moveCounter)++;
 				break;
@@ -661,7 +696,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y+i, 28);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x+i, y+i) == WHITE) {
+			if(getColor(input->board, x+i, y+i) == WHITE && input->board[x+i][y+i] != 19) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y+i, 28);
 				(*moveCounter)++;
 				break;
@@ -678,7 +713,7 @@ void generateQueenMove(boardState *input, boardState *tmp, int x, int y, int *mo
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y-i, 28);
 				(*moveCounter)++;
 			}
-			if(getColor(input->board, x+i, y-i) == WHITE) {
+			if(getColor(input->board, x+i, y-i) == WHITE && input->board[x+i][y-i] != 19) {
 				tmp->next[*moveCounter] = doMove(input, x, y, x+i, y-i, 28);
 				(*moveCounter)++;
 				break;
