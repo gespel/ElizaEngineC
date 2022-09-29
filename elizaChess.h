@@ -45,3 +45,4 @@ int getColor(short board[8][8], int x, int y);
 void copyBoardState(boardState *src, boardState *dst);
 boardState *doMove(boardState *alt, int x_old, int y_old, int x_new, int y_new, int piece);
 void printBoard(boardState *input);
+int getListLength(boardState* root);

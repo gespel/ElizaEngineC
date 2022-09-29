@@ -1,6 +1,7 @@
 #include "elizaChess.h"
 
 int counter = 0;
+int depth = 1;
 
 float evaluate(boardState *input) {
 	int whiteValue = 0;
@@ -100,10 +101,7 @@ boardState *moveGenerator(boardState *input) {
 					}
 					break;
 				case 24:
-					if(input->currentColor == -1) {
-						generateKnightMove(input, tmp, x, y, &moveCounter);
-					}
-					break;
+					if(input->currentColor == -1) {;
 				case 25:
 					if(input->currentColor == -1) {
 						generateRookMove(input, tmp, x, y, &moveCounter);
@@ -119,12 +117,13 @@ boardState *moveGenerator(boardState *input) {
 						generateKingMove(input, tmp, x, y, &moveCounter);
 					}
 					break;
+				}
 			}
 		}
 	}
 	for(int i = 0; i < moveCounter; i++) {
 		printBoard((tmp->next)[i]);
-		printf("Evaluation: %f\n\n\n", evaluate((tmp->next)[i]));
+		printf("Evaluation: %f\nDepth: %d\n\n\n", evaluate((tmp->next)[i]), getListLength((tmp->next)[i]));
 	}
 	tmp->moveCount = moveCounter;
 	return tmp;
@@ -179,15 +178,35 @@ void printBoard(boardState *input) {
 	printf("current Color is %d\n", input->currentColor);
 }
 
-void generate(boardState *root) {
-	if(counter < 100) {
+void generate(boardState *root, int currdepth) {
+	/*if(counter < 10000000) {
 		root = moveGenerator(root);
 		counter++;
 		printf("\n\n%d\n", counter);
 		for(int i = 0; i < root->moveCount; i++) {
 			generate(root->next[i]);
 		}
+	}*/
+	if(currdepth > depth) {
+		return;
 	}
+	else {
+		root = moveGenerator(root);
+		for(int i = 0; i < root->moveCount; i++) {
+			generate(root->next[i], currdepth++);
+		}
+	}
+	
+}
+int getListLength(boardState* root) {
+	int x = 0;
+	boardState* i;
+	i = root;
+	while(i->prev != NULL) {
+		x++;
+		i = i->prev;
+	}
+	return x;
 }
 
 
@@ -206,7 +225,7 @@ int main() {
 	 *	  =========================	=========================
 	 *	   0  1  2  3  4  5  6  7
 	 */
-	boardState *opening = malloc(sizeof(boardState));
+	boardState* opening = malloc(sizeof(boardState));
 	for(int x = 0; x < 8; x++) {
 		for(int y = 0; y < 8; y++) {
 			opening->board[x][y] = 0;
@@ -245,12 +264,8 @@ int main() {
 	opening->board[5][6] = 20;
 	opening->board[6][6] = 20;
 	opening->board[7][6] = 20;
-	//opening->board[3][3] = 14;
-	//opening->board[0][1] = 13;
-	//opening->board[5][6] = 20;
-	//opening->board[1][2] = 20;
 	opening->currentColor = 1;
 	printBoard(opening);
-	generate(opening);
+	generate(opening, 0);
 	return 0;
 }
